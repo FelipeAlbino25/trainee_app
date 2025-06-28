@@ -16,7 +16,6 @@ function App() {
     const fetchLists = async() =>{
       try{
         const listsTemp = await getLists();
-        console.log(listsTemp)
         setLists(listsTemp)
       }
       catch(err){

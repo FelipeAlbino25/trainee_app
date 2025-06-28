@@ -30,3 +30,7 @@ export const deleteListById = async (id: string): Promise<Boolean> =>{
     const response = await api.delete(`/lists/${id}`);
     return response.data as Boolean;
 }
+export const findListByName = async(name:string): Promise<List> =>{
+    const response = await api.get(`lists/listName/${name}`)
+    return response.data as List;
+}

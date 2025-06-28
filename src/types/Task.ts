@@ -3,6 +3,6 @@ export type Task ={
     name: string;
     description?: string;
     priority: string;
-    expectedFinishDate?: Date;
+    expectedFinishDate?: string;
     listId: string;
 }

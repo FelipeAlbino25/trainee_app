@@ -21,7 +21,7 @@ const RichTextExample: React.FC<Props> = ({ value, onChange }) => {
   }, [editorState]);
 
   return (
-    <div className={"hover:cursor-text"}>
+    <div className={"hover:cursor-text text-black"}>
     <Editor
       editorState={editorState}
       onEditorStateChange={setEditorState}

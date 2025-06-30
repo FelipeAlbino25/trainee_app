@@ -1,4 +1,5 @@
 import React from "react";
+import RichTextExample from "./TextEditor";
 import type { List } from "../types/List";
 import type { Task } from "../types/Task";
 import TaskComponent from "./Task";
@@ -190,12 +191,8 @@ if (date !== "") {
                 value={title}
                 onChange={(e)=>setTitle(e.target.value)}
               />
-              <textarea
-                placeholder="Descrição"
-                value={description}
-                className="p-2 rounded text-white focus:outline-none focus:ring ring-white transition duration-200 hover:ring hover:ring-white"
-                onChange={(e)=>setDescription(e.target.value)}
-              />
+              <RichTextExample value={""} onChange={(value)=>setDescription(value)} />
+
               <select className="p-2 rounded text-white"
                 value={priority}
                 onChange={(e)=>setPriority(e.target.value)}

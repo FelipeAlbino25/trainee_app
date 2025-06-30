@@ -53,7 +53,7 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
         const { bgColor, textColor } = dateMap[status];
 
         return (
-          <div className={`text-xs px-2 py-1 rounded-md font-semibold ${bgColor} ${textColor} mx-1`}>
+          <div className={`text-xs px-2 py-1 rounded-md font-semibold ${bgColor} ${textColor} mx-1 mt-auto flex`}>
             {setDate.toDateString()}
           </div>
         );

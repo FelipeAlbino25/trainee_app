@@ -131,7 +131,7 @@ const [initialDate, setInitialDate] = useState('');
         onClick={(e) => {
           if (!modal) openModal(e);
         }}
-        className="border border-stone-300/25 bg-stone-900 text-stone-300 rounded-md flex flex-col items-start gap-1 w-full min-h-[150px] p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200"
+        className="border border-stone-300/25 bg-stone-900 text-stone-300 rounded-md flex flex-col items-start gap-1 w-full h-[170px] p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200"
       >
         <Priority priority={priority} />
         <div>

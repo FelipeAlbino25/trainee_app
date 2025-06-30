@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TaskDate from "./TaskDate";
+import RichTextExample from "./TextEditor";
 import Priority from "./Priority";
 import { deleteTaskById, updateTaskById } from "../api/endpoints/Task";
 
@@ -144,15 +145,17 @@ const [initialDate, setInitialDate] = useState('');
             WebkitBoxOrient: "vertical",
           }}
         >
-          {description}
+          <div
+            dangerouslySetInnerHTML={{ __html: description ?? '' }}
+          />
         </p>
         <TaskDate date={expectedFinishDate} />
       </div>
 
       {modal && (
-        <div className="fixed inset-0 bg-black/90 bg-opacity-50 z-50 flex items-center justify-center text-white">
+        <div className="fixed inset-0 bg-black/90 bg-opacity-50 z-50 flex items-center justify-center text-white cursor-default">
           <div
-            className="bg-stone-900 p-4 rounded shadow-lg w-full max-w-md relative flex flex-col gap-2"
+            className="bg-stone-900 p-4 rounded shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto relative flex flex-col gap-2"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -178,9 +181,7 @@ const [initialDate, setInitialDate] = useState('');
               <option value={'VERY_HIGH'}>Altíssima Prioridade</option>
             </select>
             <p className="justify-left flex mt-3">Descrição:</p>
-            <input 
-            onChange={(e)=>setDescriptionInput(e.target.value)}
-            type="text" defaultValue={description} className="ring-slate-100/5 ring-1 p-2 pb-10  hover:ring-slate-200/10 hover:ring-2  rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-white/20"/>
+            <RichTextExample value={descriptionInput} onChange={(value)=>setDescriptionInput(value)} />
             <p className="justify-left flex mt-3">Data de Entrega:</p>
             <input
             onChange={(e)=>setExpectedFinishDateInput(e.target.value)}

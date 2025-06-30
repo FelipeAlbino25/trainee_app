@@ -34,6 +34,13 @@ const List = ({id, name, propTasks }: ListProps) => {
 
   const handleToggle = () => setShowModal(!showModal);
 
+  const buildDateAtMidnightLocal = (yyyyMmDd: string) => {
+    const [year, month, day] = yyyyMmDd.split("-").map(Number);
+    // Cria data com hora 00:00 no fuso local (sem conversão errada)
+    return new Date(year, month - 1, day, 0, 0, 0);
+  };
+  
+
   const updateThisList = async(e: React.MouseEvent)=>{
 
     try{
@@ -77,10 +84,15 @@ const List = ({id, name, propTasks }: ListProps) => {
   }
 
   const handleCreateTask = async(name:string) =>{
+    try{
     const response = await findListByName(name);
-   
-    const newDate = new Date(date).toISOString();
-    console.log(newDate)
+    
+    let newDate = null;
+if (date !== "") {
+  const localDate = buildDateAtMidnightLocal(date);
+  newDate = localDate.toISOString(); // agora sim: '2025-06-30T03:00:00.000Z'
+}
+
 
     const newTask ={
       name:title,
@@ -89,9 +101,9 @@ const List = ({id, name, propTasks }: ListProps) => {
       expectedFinishDate: newDate,
       listId: response.id
     }
-    console.log(newTask)
 
     const createTaskResponse = await createTask(newTask);
+    
     setShowModal(false)
     setTitle("")
     setDate("")
@@ -103,6 +115,11 @@ const List = ({id, name, propTasks }: ListProps) => {
       setShowModal(false)
     }
 
+  }
+  catch(err){
+    console.error(err)
+    window.alert('Algo deu Errado!')
+  }
   
 
   }
@@ -148,7 +165,7 @@ const List = ({id, name, propTasks }: ListProps) => {
             {"Adicionar Atividade"}
           </button>
         {tasks.map((task) => (
-            <TaskComponent key={task.id} {...task} expectedFinishDate={task.expectedFinishDate ? new Date(task.expectedFinishDate) : undefined} />
+            <TaskComponent key={task.id} {...task} description={task.description ?? undefined} expectedFinishDate={task.expectedFinishDate ? new Date(task.expectedFinishDate) : undefined} />
         ))}
        
         {/* Modal */}
@@ -169,14 +186,14 @@ const List = ({id, name, propTasks }: ListProps) => {
               <input
                 type="text"
                 placeholder="Título"
-                className="p-2 rounded text-white"
+                className="p-2 rounded text-white focus:outline-none focus:ring ring-white transition duration-200 hover:ring hover:ring-white"
                 value={title}
                 onChange={(e)=>setTitle(e.target.value)}
               />
               <textarea
                 placeholder="Descrição"
                 value={description}
-                className="p-2 rounded text-white"
+                className="p-2 rounded text-white focus:outline-none focus:ring ring-white transition duration-200 hover:ring hover:ring-white"
                 onChange={(e)=>setDescription(e.target.value)}
               />
               <select className="p-2 rounded text-white"

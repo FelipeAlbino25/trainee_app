@@ -1,8 +1,8 @@
 export type Task ={
     id: string;
     name: string;
-    description?: string;
+    description?: string |null;
     priority: string;
-    expectedFinishDate?: string;
+    expectedFinishDate?: string | null;
     listId: string;
 }

@@ -155,24 +155,31 @@ if (date !== "") {
     return (
       <div 
       
-      className="bg-black/30 border-2  p-4 rounded-md flex flex-col gap-4 min-w-[300px] w-full sm:w-80 h-min hover:border-white hover:bg-black/60 transition duration-200 hover:cursor-pointer">
+      className="bg-[#1C1C1C] border-1 border-white/30  p-4 rounded-md flex flex-col gap-4 min-w-[300px] w-full sm:w-80 h-min transition duration-200">
        
         <p 
         onClick={(e)=>openModal(e) }
-        className="font-mono text-white font-semibold text-xs hover:underline hover:underline-offset-1">{name}</p>
-        <button 
-        onClick={handleToggle}
-        className="hover:cursor-pointer bg-stone-200/30 border-1 rounded-md border-white/20 text-white/80 font-bold text-sm hover:bg-stone-200/10 transition duration-200 ">
-            {"Adicionar Atividade"}
-          </button>
+        className="text-white font-semibold text-xs hover:cursor-pointer hover:underline hover:underline-offset-1">{name}</p>
+      
         {tasks.map((task) => (
             <TaskComponent key={task.id} {...task} description={task.description ?? undefined} expectedFinishDate={task.expectedFinishDate ? new Date(task.expectedFinishDate) : undefined} />
         ))}
+          <button 
+  onClick={handleToggle}
+  className="flex hover:cursor-pointer items-center gap-2 bg-[#1C1C1C] text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-[#2A2A2A] transition"
+>
+  <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-black text-base font-bold">
+    +
+  </div>
+  Nova tarefa
+</button>
+
        
         {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/90 bg-opacity-50 flex items-center justify-center z-40">
-          <div className="bg-stone-900 text-white p-6 rounded-lg w-full max-w-md shadow-lg relative">
+        <div className="fixed inset-0 bg-black/90 bg-opacity-50 flex items-center justify-center z-60 overflow-y-auto hover:cursor-default">
+          <div 
+            className=" mb-10 bg-[#1C1C1C]  p-4 rounded shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto relative flex flex-col gap-2">
             {/* Botão de fechar */}
             <button
               onClick={handleToggle}
@@ -182,7 +189,7 @@ if (date !== "") {
             </button>
 
             {/* Formulário */}
-            <h2 className="text-xl font-bold mb-4">Nova Tarefa</h2>
+            <h2 className="text-xl font-bold mb-4 text-white">Nova Tarefa</h2>
             <div className="flex flex-col gap-3">
               <input
                 type="text"
@@ -242,10 +249,14 @@ if (date !== "") {
           <button 
           onClick={(e)=> updateThisList(e)}
           className='mt-2 p-1 bg-white text-black font-bold rounded-xl hover:bg-black hover:text-white transition duration-300 hover:cursor-pointer'>{'Atualizar'}</button>
-          <button 
-          onClick={(e)=> deleteThisList(e)}
-          className='mt-2 p-1 bg-white text-black font-bold rounded-xl hover:bg-red-600 hover:text-white transition duration-300 hover:cursor-pointer'>{'Excluir'}</button>
-          
+          <button
+  onClick={deleteThisList}
+  className="flex items-center gap-2 text-[#C10000] font-semibold text-base hover:opacity-80 transition duration-200"
+>
+  <img src="../../public/delete.png" alt="Trash icon" className="w-5 h-5" />
+  Deletar
+</button>
+
         
         </div>
       </div>

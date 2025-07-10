@@ -63,12 +63,18 @@ const Board = ({ lists }: { lists: List[] }) => {
         {lists.map((list) => (
           <ListComponent key={list.id} id={list.id} name={list.name} propTasks={list.tasks}/>
         ))}
-        <div className='items-center bg-black/30 border-2 p-4 rounded-md flex flex-col gap-4 min-w-[300px] w-full sm:w-80 h-min'>
-        <p 
-        className="font-mono text-white font-semibold text-xs ">{'Criar Lista'}</p>
-        <button
-        onClick={(e)=>openModal(e)}
-        className='w-full p-1 bg-stone-900 border-2 border-stone-300/25 rounded-xl text-white font-extrabold text-sm hover:bg-black hover:ring-1 hover:ring-white transition duration-200 hover:cursor-pointer'>{'Adicionar Lista'}</button>
+        <div className='items-center bg-[#1C1C1C] rounded-md flex flex-col gap-4 min-w-[300px] w-full sm:w-80 h-min'>
+        
+                <button 
+  onClick={(e)=>createThisList(e)}
+  className="w-full flex hover:cursor-pointer items-center gap-2 bg-[#1C1C1C] text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-[#2A2A2A] transition"
+>
+  <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-black text-base font-bold">
+    +
+  </div>
+  Nova tarefa
+</button>
+
         </div>
 
         {modal && (

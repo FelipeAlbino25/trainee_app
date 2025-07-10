@@ -13,6 +13,7 @@ type Task = {
   listId: string;
 };
 
+
 const Task: React.FC<Task> = ({
   id,
   name,
@@ -131,14 +132,14 @@ const [initialDate, setInitialDate] = useState('');
         onClick={(e) => {
           if (!modal) openModal(e);
         }}
-        className="border border-stone-300/25 bg-stone-900 text-stone-300 rounded-md flex flex-col items-start gap-1 w-full h-[170px] p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200"
+        className="border border-stone-300/25 bg-[#1C1C1C] text-stone-300 rounded-md flex flex-col items-start gap-1 w-full h-[170px] p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200"
       >
         <Priority priority={priority} />
         <div>
           <span className="text-xs font-extrabold px-1">{name}</span>
         </div>
         <p
-          className="font-sans w-full text-left text-xs px-1 overflow-hidden text-ellipsis break-words font-medium"
+          className=" w-full text-left text-xs px-1 overflow-hidden text-ellipsis break-words"
           style={{
             display: "-webkit-box",
             WebkitLineClamp: 3,
@@ -191,12 +192,20 @@ const [initialDate, setInitialDate] = useState('');
             <button 
             onClick={(e)=> updateThisTask(e)}
             className='mt-2 p-1 bg-white text-black font-bold rounded-xl hover:bg-black hover:text-white transition duration-300 hover:cursor-pointer'>{'Atualizar'}</button>
-            <button 
-            onClick={(e)=> deleteThisTask(e)}
-            className='mt-2 p-1 bg-white text-black font-bold rounded-xl hover:bg-red-600 hover:text-white transition duration-300 hover:cursor-pointer'>{'Excluir'}</button>
-            
+           
+            <button
+  onClick={(e)=>deleteThisTask(e)}
+  className="flex items-center gap-2 text-[#C10000] font-semibold text-base hover:opacity-80 transition duration-200"
+>
+  <img src="../../public/delete.png" alt="Trash icon" className="w-5 h-5" />
+  Deletar
+</button>
           
           </div>
+
+
+
+          
         </div>
       )}
     </>

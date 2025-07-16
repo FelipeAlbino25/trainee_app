@@ -53,17 +53,21 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
         const { bgColor, textColor } = dateMap[status];
 
         return (
-          <div className={`text-xs px-2 py-1 rounded-md font-semibold ${bgColor} ${textColor} mx-1 mt-auto flex`}>
+          <div className={`text-xs px-2 py-1 rounded-md font-semibold ${bgColor} ${textColor} mx-1 mt-auto`}>
             {setDate.toDateString()}
           </div>
         );
+
+
     }
     else{
-        return (
-            <div className={`text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1`}>
-              {'Data Indefinida'}
-            </div>
-          );
+       return (
+          <div className="text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1 mt-auto">
+            {'Data Indefinida'}
+          </div>
+        );
+
+
     }
 
  

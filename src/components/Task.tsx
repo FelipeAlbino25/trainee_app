@@ -252,7 +252,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
     className="rounded-xl flex-1 py-2 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-xlhover:cursor-pointer hover:ring-1 transition duration-200"
   >
     <img src="./delete.png" alt="Trash icon" className="w-5 h-5 " />
-    Deletar
+    Excluir
   </button>
 </div>
 
@@ -271,7 +271,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
       </button>
 
       <h2 className="text-base font-bold m-3">
-        Tem certeza que deseja deletar a tarefa <span className="text-white font-semibold">"{name}"</span>?
+        Tem certeza que deseja excluir a tarefa <span className="text-white font-semibold">"{name}"</span>?
       </h2>
 
       <p className="text-sm text-stone-400">Essa ação não é reversível.</p>
@@ -284,7 +284,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
         className="mt-2 flex justify-center hover:ring-1 ring-red-500/30 p-2 rounded-md  items-center gap-2 text-[#C10000] font-semibold text-sm hover:cursor-pointer transition duration-100"
       >
         <img src="./delete.png" alt="Trash icon" className="w-4 h-4" />
-        Deletar
+        Excluir
       </button>
     </div>
   </div>

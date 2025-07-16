@@ -53,7 +53,7 @@ const List = ({ id, name, propTasks }: ListProps) => {
     try {
       const response = await deleteListById(id);
       if (response) {
-        setDeleteMessage("Lista deletada com sucesso!");
+        setDeleteMessage("Lista excluída com sucesso!");
         setTimeout(() => {
           window.location.reload();
         }, 1500);
@@ -161,7 +161,7 @@ const List = ({ id, name, propTasks }: ListProps) => {
                   onClick={(e) =>openModal(e)}
                   className="w-full text-left px-4 py-2 hover:bg-white/10 transition text-sm"
                 > <img src="./edit.svg" className="h-4 w-4 inline mr-1"/>
-                  Editar
+                  Edsitar
                 </button>
                 <button
                   onClick={() => {
@@ -304,7 +304,7 @@ const List = ({ id, name, propTasks }: ListProps) => {
               &times;
             </button>
             <h2 className="text-base font-bold m-3">
-              Tem certeza que deseja deletar a lista{" "}
+              Tem certeza que deseja excluir a lista{" "}
               <span className="text-white font-semibold">"{name}"</span>?
             </h2>
             <p className="text-sm text-stone-400">Essa ação não é reversível.</p>
@@ -316,7 +316,7 @@ const List = ({ id, name, propTasks }: ListProps) => {
               className="hover:ring-1 ring-red-500/30 p-2 rounded-md justify-center mt-2 flex items-center gap-2 text-[#C10000] font-semibold text-sm hover:cursor-pointer transition duration-100"
             >
               <img src="./delete.png" alt="Trash icon" className="w-4 h-4" />
-              Deletar
+              Excluir
             </button>
           </div>
         </div>

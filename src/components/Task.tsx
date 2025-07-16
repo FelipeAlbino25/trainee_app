@@ -28,11 +28,11 @@ const Task: React.FC<Task> = ({
   const [expectedFinishDateInput, setExpectedFinishDateInput] = useState('');
 
   const [initialName, setInitialName] = useState('');
-const [initialDescription, setInitialDescription] = useState('');
-const [initialPriority, setInitialPriority] = useState('');
-const [initialDate, setInitialDate] = useState('');
-const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-const [showDeleteNotification, setShowDeleteNotification] = useState(false);
+  const [initialDescription, setInitialDescription] = useState('');
+  const [initialPriority, setInitialPriority] = useState('');
+  const [initialDate, setInitialDate] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showDeleteNotification, setShowDeleteNotification] = useState(false);
 
 
 
@@ -81,13 +81,20 @@ const [showDeleteNotification, setShowDeleteNotification] = useState(false);
     }
   };
 
+
+  const buildDateAtMidnightLocal = (yyyyMmDd: string) => {
+    const [year, month, day] = yyyyMmDd.split("-").map(Number);
+    return new Date(year, month - 1, day, 0, 0, 0);
+  };
+
   const updateThisTask = async (e: React.MouseEvent) =>{
     try{
     e.preventDefault();
 
-    let newDate;
-    if(expectedFinishDateInput != ''){
-      newDate = new Date(expectedFinishDateInput).toISOString();
+    let newDate = null;
+    if(expectedFinishDateInput != ""){
+      const localDate = buildDateAtMidnightLocal(expectedFinishDateInput);
+      newDate =  localDate.toISOString();
     }
     else{
       newDate = undefined;
@@ -125,7 +132,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
     // Aguarda 2 segundos e recarrega
     setTimeout(() => {
       window.location.reload();
-    }, 2000);
+    }, 1300);
   } catch (err) {
     console.error(err);
   }

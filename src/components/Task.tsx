@@ -145,25 +145,25 @@ const deleteThisTask = async (e: React.MouseEvent) => {
         onClick={(e) => {
           if (!modal) openModal(e);
         }}
-        className="relative border border-stone-300/25 bg-[#1C1C1C] text-stone-300 rounded-xl flex flex-col items-start gap-1 
+        className="relative border border-stone-300/25 bg-[#252628] text-stone-300 rounded-xl flex flex-col items-start gap-1 
           w-full 
-          h-[25vh]                                
-          max-h-[220px]                           
-          min-h-[180px]                            
-          max-[1024px]:h-[27vh] 
-          max-[768px]:h-[24vh] 
-          max-[640px]:h-[22vh] 
-          max-[500px]:h-[20vh] 
-          max-[400px]:h-[19vh]
+          h-[145px]                                
+          
+          max-[1280px]:h-[145px]                            
+          max-[1024px]:h-[145px] 
+          max-[768px]:h-[135px] 
+          max-[640px]:h-[135px] 
+          max-[500px]:h-[130px] 
+          max-[400px]:h-[130px]
           p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200"
       >
 
         <Priority priority={priority} />
         <div>
-          <span className="text-md font-extrabold px-1">{name}</span>
+          <span className="text-sm font-extrabold px-1">{name}</span>
         </div>
         <p
-          className=" w-full text-left text-xs px-1 overflow-hidden text-ellipsis break-words"
+          className="tracking-wide w-full text-left text-[10px] text-xs/4 px-1 overflow-hidden text-ellipsis break-words"
          
         >
           {description}
@@ -180,7 +180,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
   <div
     onClick={(e) => e.stopPropagation()}
     className={`
-      fixed top-0 right-0 h-full w-full max-w-md bg-[#1C1C1C] p-4 shadow-lg 
+      fixed top-0 right-0 h-full w-full max-w-md bg-[#252628] p-4 shadow-lg 
       transform transition-transform duration-300 ease-in-out 
       ${modal ? 'translate-x-0' : 'translate-x-full'}
       flex flex-col gap-2 overflow-y-auto
@@ -261,7 +261,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
 </div>
 {showDeleteConfirm && (
   <div className="fixed inset-0 z-[999] bg-black/80 flex items-center justify-center">
-    <div className="relative bg-[#1C1C1C] border border-white/10 p-5 rounded-xl shadow-lg flex flex-col gap-3 max-w-xs w-full mx-4 text-white">
+    <div className="relative bg-[#252628] border border-white/10 p-5 rounded-xl shadow-lg flex flex-col gap-3 max-w-xs w-full mx-4 text-white">
       
       <button
         onClick={() => setShowDeleteConfirm(false)}

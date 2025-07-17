@@ -53,8 +53,46 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
         const { bgColor, textColor } = dateMap[status];
 
         return (
-          <div className={`text-xs px-2 py-1 rounded-md font-semibold ${bgColor} ${textColor} mx-1 mt-auto`}>
-            {setDate.toDateString()}
+          <div className={`items-center text-xs px-2 py-1 rounded-md font-bold ${bgColor} ${textColor} mx-1 mt-auto flex gap-2
+          text-[12px]
+          h-[18px]
+
+            max-[1280px]:max-w-[150px]
+            max-[1280px]:max-h-[18px]
+            max-[1280px]:text-[11px]
+
+            max-[1024px]:max-w-[120px]
+            max-[1024px]:text-[9px]
+            max-[1024px]:max-h-[20px]
+
+            max-[768px]:max-w-[100px]
+            max-[768px]:text-[8px]
+
+            max-[640px]:max-w-[80px]
+            max-[640px]:text-[9px]
+            max-[640px]:max-h-[16px]
+
+            max-[500px]:text-[7px]
+            
+             transition-all duration-300 ease-in-out relative
+          
+          `}>
+            <img src="./calendar.svg" className="
+            max-h-4
+            max-w-4
+            max-[1024px]:h-4
+            max-[1024px]:w-4
+
+            max-[768px]:h-3
+            max-[768px]:w-3
+
+            max-[640px]:w-3
+            max-[640px]:h-3
+
+            max-[500px]:w-2
+            max-[500px]:h-2
+            "/>
+            {setDate.toLocaleDateString()}
           </div>
         );
 
@@ -62,7 +100,29 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
     }
     else{
        return (
-          <div className="text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1 mt-auto">
+          <div className="text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1 mt-auto
+          text-[10px]
+          h-[18px]
+
+            max-[1280px]:max-w-[150px]
+            max-[1280px]:max-h-[18px]
+            max-[1280px]:text-[10px]
+
+            max-[1024px]:max-w-[120px]
+            max-[1024px]:text-[9px]
+            max-[1024px]:max-h-[20px]
+
+            max-[768px]:max-w-[100px]
+            max-[768px]:text-[8px]
+
+            max-[640px]:max-w-[80px]
+            max-[640px]:text-[9px]
+            max-[640px]:max-h-[16px]
+
+            max-[500px]:text-[7px]
+            
+             transition-all duration-300 ease-in-out relative
+          ">
             {'Data Indefinida'}
           </div>
         );

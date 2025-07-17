@@ -39,8 +39,29 @@ const Priority = ({ priority }: PriorityProps) => {
   const { bgColor, textColor, label } = priorityMap[priority] || priorityMap.DEFAULT;
 
   return (
-    <div className={`${bgColor} ${textColor} font-black ml-1 mt-3 p-1 rounded-md`}>
-      <p className="text-xs">{label}</p>
+    <div className={`${bgColor} ${textColor} font-black ml-1 mt-1 p-1 rounded-md flex items-center
+          max-h-[20px]
+          max-w-[150px]
+          text-[12px]
+        
+            max-[1280px]:text-[12px]
+
+            
+            max-[1024px]:text-[9px]
+           
+
+            max-[768px]:max-w-[100px]
+            max-[768px]:text-[8px]
+
+            max-[640px]:max-w-[80px]
+            max-[640px]:text-[9px]
+            max-[640px]:max-h-[16px]
+
+            max-[500px]:text-[7px]
+            
+             transition-all duration-300 ease-in-out relative
+    `}>
+      <p >{label}</p>
     </div>
   );
 };

@@ -65,7 +65,7 @@ const Board = ({ lists }: { lists: List[] }) => {
   }
 
     return (
-  <div className="flex flex-row flex-nowrap gap-4 overflow-x-auto sm:p-10  w-full pt-15">
+  <div className=" flex flex-row flex-nowrap gap-4 overflow-x-auto sm:pt-15 py-4  w-full pt-15">
     {lists.map((list) => (
     <ListComponent
       key={list.id}
@@ -74,10 +74,10 @@ const Board = ({ lists }: { lists: List[] }) => {
       propTasks={list.tasks}
     />
   ))}
-  <div className="bg-[#1C1C1C] rounded-md flex flex-col gap-4 min-w-[300px] w-[300px] h-min shrink-0 relative top-2">
+  <div className="rounded-md flex flex-col gap-4 min-w-[300px] w-[300px] h-min shrink-0 relative top-2">
     <button
       onClick={(e) => openModal(e)}
-      className="w-full flex items-center gap-2 bg-[#1C1C1C] text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-[#2A2A2A] transition"
+      className="w-full flex items-center gap-2  text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-[#2A2A2A] transition hover:cursor-pointer"
     >
       <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-black text-base font-bold">+</div>
       Nova Lista
@@ -90,7 +90,7 @@ const Board = ({ lists }: { lists: List[] }) => {
       onClick={(e) => closeModal(e)}
     >
       <div
-        className="bg-[#1C1C1C] p-4 rounded shadow-lg w-full max-w-md relative flex flex-col gap-2"
+        className="bg-[#252628] p-4 rounded shadow-lg w-full max-w-md relative flex flex-col gap-2"
         onClick={(e) => e.stopPropagation()}
       >
         <button

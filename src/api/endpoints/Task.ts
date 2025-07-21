@@ -42,3 +42,10 @@ export const deleteTasksByListId = async (id:string): Promise<Boolean> =>{
     const response = await api.delete(`/tasks/listId/${id}`);
     return response.data as Boolean;
 }
+export const moveTaskToNewList = async (id:string, newListId: string): Promise<Boolean> =>{
+
+    
+
+    const response = await api.put(`/tasks/moveTask/${id}`,{listId: newListId});
+    return response.data as Boolean;
+}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import type{ List } from '../types/List';
 import { createList } from "../api/endpoints/List";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import { moveTaskToNewList } from "../api/endpoints/Task";
 
 
 
@@ -11,7 +12,7 @@ const Board = ({ lists }: { lists: List[] }) => {
   const [modal,setModal] = useState(false);
   const [listNameInput, setListNameInput] = useState('')
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
   const { active, over } = event;
 
   if (!over) return;
@@ -21,9 +22,8 @@ const Board = ({ lists }: { lists: List[] }) => {
   const toListId = over.id as string;
 
   if (fromListId && toListId && fromListId !== toListId) {
-    console.log("Movendo task:", taskId);
-    console.log("De lista:", fromListId);
-    console.log("Para lista:", toListId);
+    
+    await moveTaskToNewList(taskId,toListId);
 
   }
 };

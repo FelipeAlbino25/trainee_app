@@ -50,10 +50,10 @@ const Priority = ({ priority }: PriorityProps) => {
             max-[1024px]:text-[9px]
            
 
-            max-[768px]:max-w-[100px]
+            max-[768px]:max-w-[120px]
             max-[768px]:text-[8px]
 
-            max-[640px]:max-w-[80px]
+            max-[640px]:max-w-[110px]
             max-[640px]:text-[9px]
             max-[640px]:max-h-[16px]
 

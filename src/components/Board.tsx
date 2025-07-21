@@ -2,6 +2,7 @@ import ListComponent from "./List";
 import { useState } from "react";
 import type{ List } from '../types/List';
 import { createList } from "../api/endpoints/List";
+import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 
 
 
@@ -9,6 +10,24 @@ const Board = ({ lists }: { lists: List[] }) => {
 
   const [modal,setModal] = useState(false);
   const [listNameInput, setListNameInput] = useState('')
+
+  const handleDragEnd = (event: DragEndEvent) => {
+  const { active, over } = event;
+
+  if (!over) return;
+
+  const taskId = active.id as string;
+  const fromListId = active.data.current?.listId as string;
+  const toListId = over.id as string;
+
+  if (fromListId && toListId && fromListId !== toListId) {
+    console.log("Movendo task:", taskId);
+    console.log("De lista:", fromListId);
+    console.log("Para lista:", toListId);
+
+  }
+};
+
 
   const openModal = (e: React.MouseEvent) =>{
     e.preventDefault();
@@ -66,6 +85,7 @@ const Board = ({ lists }: { lists: List[] }) => {
 
     return (
   <div className=" flex flex-row flex-nowrap gap-4 overflow-x-auto sm:pt-15 py-4  w-full pt-15">
+    <DndContext onDragEnd={handleDragEnd}>
     {lists.map((list) => (
     <ListComponent
       key={list.id}
@@ -73,6 +93,7 @@ const Board = ({ lists }: { lists: List[] }) => {
       name={list.name}
       propTasks={list.tasks}
     />
+
   ))}
   <div className="rounded-md flex flex-col gap-4 min-w-[300px] w-[300px] h-min shrink-0 relative top-2">
     <button
@@ -115,6 +136,7 @@ const Board = ({ lists }: { lists: List[] }) => {
       </div>
     </div>
   )}
+  </DndContext>
 </div>
 
 

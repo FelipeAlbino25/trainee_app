@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TaskDate from "./TaskDate";
 import Priority from "./Priority";
 import { deleteTaskById, updateTaskById } from "../api/endpoints/Task";
+import { useDraggable } from "@dnd-kit/core";
 
 type Task = {
   id: string;
@@ -138,6 +139,20 @@ const deleteThisTask = async (e: React.MouseEvent) => {
   }
 };
 
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  id: id,
+  data: {
+    listId: listId, // necessário para identificar de onde veio
+  },
+});
+
+
+  const isDragging = !!transform;
+  const style = transform ? {
+    transform: `translate(${transform.x}px, ${transform.y}px)`,
+    zIndex: 9999, // Eleva o item ao topo durante o drag
+    position: "relative" as React.CSSProperties["position"],
+  } : undefined;
 
   return (
     <>
@@ -145,7 +160,12 @@ const deleteThisTask = async (e: React.MouseEvent) => {
         onClick={(e) => {
           if (!modal) openModal(e);
         }}
-        className="relative border border-stone-300/25 bg-[#252628] text-stone-300 rounded-xl flex flex-col items-start gap-1 
+
+        style={style}
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
+        className={`relative border border-stone-300/25 bg-[#252628] text-stone-300 rounded-xl flex flex-col items-start gap-1 
           w-full 
           h-[145px]                                
           
@@ -155,7 +175,9 @@ const deleteThisTask = async (e: React.MouseEvent) => {
           max-[640px]:h-[135px] 
           max-[500px]:h-[130px] 
           max-[400px]:h-[130px]
-          p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200"
+          
+           ${isDragging ? 'z-[9999]' : ''}
+          p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200`}
       >
 
         <Priority priority={priority} />

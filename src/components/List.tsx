@@ -4,6 +4,7 @@ import type { Task } from "../types/Task";
 import TaskComponent from "./Task";
 import { deleteListById, findListByName, updateListById } from "../api/endpoints/List";
 import { createTask } from "../api/endpoints/Task";
+import { useDroppable } from "@dnd-kit/core";
 
 interface ListProps {
   id: string;
@@ -47,6 +48,10 @@ const List = ({ id, name, propTasks }: ListProps) => {
       window.alert("Algo deu errado");
     }
   };
+
+  const {setNodeRef} =  useDroppable({
+    id: id
+  })
 
   const deleteThisList = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -121,6 +126,8 @@ const List = ({ id, name, propTasks }: ListProps) => {
 
   return (
    <div
+    ref={setNodeRef}
+
   className="
     bg-[#252628] border border-white/30 p-4 rounded-xl flex flex-col gap-4
     w-[350px]
@@ -131,7 +138,7 @@ const List = ({ id, name, propTasks }: ListProps) => {
     max-[1024px]:min-w-[340px]
     max-[768px]:min-w-[295px]
 
-    overflow-y-auto transition-all duration-300 ease-in-out relative
+    transition-all duration-300 ease-in-out relative
   "
 >
   <div className="flex justify-between items-center relative">

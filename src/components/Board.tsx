@@ -22,8 +22,10 @@ const Board = ({ lists }: { lists: List[] }) => {
   const toListId = over.id as string;
 
   if (fromListId && toListId && fromListId !== toListId) {
-    
+    console.log(taskId)
+    console.log(toListId)
     await moveTaskToNewList(taskId,toListId);
+    setTimeout(()=> window.location.reload(),500)
 
   }
 };

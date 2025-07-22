@@ -142,7 +142,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
   id: id,
   data: {
-    listId: listId, // necessário para identificar de onde veio
+    listId: listId,
   },
 });
 
@@ -177,7 +177,9 @@ const deleteThisTask = async (e: React.MouseEvent) => {
           max-[400px]:h-[130px]
           
            ${isDragging ? 'z-[9999]' : ''}
-          p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50 transition duration-200`}
+          p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50
+          ${transform ? "" : "transition duration-200"}
+          `}
       >
 
         <Priority priority={priority} />

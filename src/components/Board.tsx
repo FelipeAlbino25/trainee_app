@@ -6,7 +6,6 @@ import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { moveTaskToNewList } from "../api/endpoints/Task";
 
 
-
 const Board = ({ lists }: { lists: List[] }) => {
 
   const [modal,setModal] = useState(false);
@@ -25,7 +24,7 @@ const Board = ({ lists }: { lists: List[] }) => {
     console.log(taskId)
     console.log(toListId)
     await moveTaskToNewList(taskId,toListId);
-    setTimeout(()=> window.location.reload(),500)
+    setTimeout(()=> window.location.reload(),100)
 
   }
 };

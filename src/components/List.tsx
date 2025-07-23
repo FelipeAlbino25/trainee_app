@@ -1,4 +1,4 @@
-  import React, { useState } from "react";
+  import React, { useEffect, useState } from "react";
 
   import type { Task } from "../types/Task";
   import TaskComponent from "./Task";
@@ -10,9 +10,10 @@
     id: string;
     name: string;
     propTasks: Task[];
+    refetchLists: ()=>Promise<void>
   }
 
-  const List = ({ id, name, propTasks }: ListProps) => {
+  const List = ({ id, name, propTasks,refetchLists }: ListProps) => {
     const [showOptions, setShowOptions] = useState(false);
     const [showDeleteConfirmList, setShowDeleteConfirmList] = useState(false);
     const [deleteMessage, setDeleteMessage] = useState("");
@@ -41,8 +42,14 @@
       try {
         const newList = { id, name: nameInput };
         const response = await updateListById(newList);
-        if (response) window.location.reload();
-        else window.alert("Algo deu errado");
+        if (!response){ 
+          window.alert("Algo deu errado");
+          return;
+        }
+        
+        setShowListModal(false)
+        refetchLists()
+        
       } catch (err) {
         console.error(err);
         window.alert("Algo deu errado");
@@ -55,20 +62,16 @@
 
     const deleteThisList = async (e: React.MouseEvent) => {
       e.preventDefault();
-      try {
-        const response = await deleteListById(id);
-        if (response) {
-          setDeleteMessage("Lista excluída com sucesso!");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          window.alert("Algo deu errado");
+      setDeleteMessage("Lista Excluída com Sucesso!")
+      setTimeout(async()=>{
+        try{
+          await deleteListById(id)
+          refetchLists()
         }
-      } catch (err) {
-        console.error(err);
-        window.alert("Algo deu errado");
-      }
+        catch(error){
+          console.error(error)
+        }
+      },900)
     };
 
     const handleCreateTask = async (name: string) => {
@@ -124,6 +127,11 @@
 
     const fieldsChanged = () => nameInput !== initialName;
 
+    useEffect(()=>{
+      setTasks(propTasks)
+
+    },[propTasks])
+
     return (
     <div
       ref={setNodeRef}
@@ -171,7 +179,9 @@
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={(e) => openModal(e)}
+                onClick={(e) => {openModal(e)
+                  setShowOptions(false)
+                }}
                 className="w-full text-left py-2 hover:bg-white/10 transition text-sm"
                 style={{ paddingLeft: "2vh", paddingRight: "2vh" }}
               >
@@ -205,6 +215,7 @@
             ? new Date(task.expectedFinishDate)
             : undefined
         }
+        refetchLists={refetchLists}
       />
     ))}
 
@@ -224,9 +235,9 @@
         showModal ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className="absolute inset-0 bg-black/80" onClick={handleToggle}></div>
+      <div className=" absolute inset-0 bg-black/80" onClick={handleToggle}></div>
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-[#252628] p-4 shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-16 right-0 h-full w-full max-w-md bg-[#252628] p-4 shadow-lg transform transition-transform duration-300 ease-in-out ${
           showModal ? "translate-x-0" : "translate-x-full"
         } flex flex-col gap-2`}
       >

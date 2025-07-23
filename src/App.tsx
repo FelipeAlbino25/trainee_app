@@ -7,31 +7,27 @@ import { getLists } from './api/endpoints/List'
 import type { List } from './types/List'
 
 function App() {
+  const [lists, setLists] = useState<List[]>([]);
 
-  const [lists,setLists] = useState<List[]>([]);
-
-  useEffect(()=>{
-  
-    const fetchLists = async() =>{
-      try{
-        const listsTemp = await getLists();
-        setLists(listsTemp)
-      }
-      catch(err){
-        console.error(err)
-      }
+  const fetchLists = async () => {
+    try {
+      const listsTemp = await getLists();
+      setLists(listsTemp);
+    } catch (err) {
+      console.error(err);
     }
+  };
+
+
+  useEffect(() => {
     fetchLists();
-
-
-  }, [])
+  }, []);
 
   return (
     <>
-    <NavBar/>
-    <Board lists={lists}></Board>
+      <NavBar />
+      <Board lists={lists} refetchLists={fetchLists} />
     </>
-  )
+  );
 }
-
-export default App
+export default App;

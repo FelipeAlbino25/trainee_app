@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import TaskDate from "./TaskDate";
 import Priority from "./Priority";
 import { deleteTaskById, updateTaskById } from "../api/endpoints/Task";
 import { useDraggable } from "@dnd-kit/core";
 
-type Task = {
+type TaskProps = {
   id: string;
   name: string;
   description?: string;
   priority: string;
   expectedFinishDate?: Date;
   listId: string;
+  refetchLists: ()=> Promise<void>;
 };
 
 
-const Task: React.FC<Task> = ({
+const Task= ({
   id,
   name,
   description,
   priority,
   expectedFinishDate,
   listId,
-}) => {
+  refetchLists
+}:TaskProps) => {
   const [modal, setModal] = useState(false);
   const [nameInput, setNameInput] = useState('');
   const [descriptionInput, setDescriptionInput] = useState('');
@@ -34,8 +36,6 @@ const Task: React.FC<Task> = ({
   const [initialDate, setInitialDate] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showDeleteNotification, setShowDeleteNotification] = useState(false);
-
-
 
 
   const openModal = (e: React.MouseEvent) => {
@@ -111,9 +111,8 @@ const Task: React.FC<Task> = ({
 
     const response = await updateTaskById(newTask);
     console.log(response)
+    await refetchLists();
     setModal(false)
-    window.location.reload();
-
     }
     catch(err){
       window.alert('Algo deu errado')
@@ -123,20 +122,22 @@ const Task: React.FC<Task> = ({
 
 const deleteThisTask = async (e: React.MouseEvent) => {
   e.preventDefault();
-  try {
-    const response = await deleteTaskById(id);
-    console.log(response);
 
-    // Mostra a notificação
+
     setShowDeleteNotification(true);
 
-    // Aguarda 2 segundos e recarrega
-    setTimeout(() => {
-      window.location.reload();
-    }, 1300);
-  } catch (err) {
-    console.error(err);
-  }
+  
+    setTimeout(async() => {
+      try{
+        await deleteTaskById(id);
+        refetchLists()
+      }
+      catch(err) 
+      {
+        console.error(err)
+      }
+    }, 900);
+
 };
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -204,7 +205,7 @@ const deleteThisTask = async (e: React.MouseEvent) => {
   <div
     onClick={(e) => e.stopPropagation()}
     className={`
-      fixed top-0 right-0 h-full w-full max-w-md bg-[#252628] p-4 shadow-lg 
+      fixed top-16 right-0 h-full w-full max-w-md bg-[#252628] p-4 shadow-lg 
       transform transition-transform duration-300 ease-in-out 
       ${modal ? 'translate-x-0' : 'translate-x-full'}
       flex flex-col gap-2 overflow-y-auto

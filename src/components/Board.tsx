@@ -6,28 +6,35 @@ import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { moveTaskToNewList } from "../api/endpoints/Task";
 
 
-const Board = ({ lists }: { lists: List[] }) => {
+const Board = ({
+  lists,
+  refetchLists
+}: {
+  lists: List[];
+  refetchLists: () => Promise<void>;
+}) => {
+ 
 
   const [modal,setModal] = useState(false);
   const [listNameInput, setListNameInput] = useState('')
 
-  const handleDragEnd = async (event: DragEndEvent) => {
-  const { active, over } = event;
+ const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
 
-  if (!over) return;
+    const taskId = active.id as string;
+    const fromListId = active.data.current?.listId as string;
+    const toListId = over.id as string;
+    if (fromListId && toListId && fromListId !== toListId) {
+      try {
+        await moveTaskToNewList(taskId, toListId);
+        await refetchLists();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
-  const taskId = active.id as string;
-  const fromListId = active.data.current?.listId as string;
-  const toListId = over.id as string;
-
-  if (fromListId && toListId && fromListId !== toListId) {
-    console.log(taskId)
-    console.log(toListId)
-    await moveTaskToNewList(taskId,toListId);
-    setTimeout(()=> window.location.reload(),100)
-
-  }
-};
 
 
   const openModal = (e: React.MouseEvent) =>{
@@ -70,11 +77,9 @@ const Board = ({ lists }: { lists: List[] }) => {
       name: listNameInput.trim()
     };
 
-    const response = await createList(newList);
-    console.log(response);
-    if (response) {
-      window.location.reload();
-    }
+    await createList(newList);
+    refetchLists()
+    closeModal(e)
 
   } catch (err) {
     console.error(err);
@@ -93,6 +98,7 @@ const Board = ({ lists }: { lists: List[] }) => {
       id={list.id}
       name={list.name}
       propTasks={list.tasks}
+      refetchLists ={refetchLists}
     />
 
   ))}

@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import type { Task } from "../types/Task";
 import TaskComponent from "./Task";
-import {
-  deleteListById,
-  findListByName,
-  updateListById,
-} from "../api/endpoints/List";
+import { deleteListById, updateListById } from "../api/endpoints/List";
 import { createTask } from "../api/endpoints/Task";
 import { useDroppable } from "@dnd-kit/core";
 
@@ -76,11 +72,8 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
     }, 900);
   };
 
-  const handleCreateTask = async (name: string) => {
+  const handleCreateTask = async () => {
     try {
-      console.log(name);
-      const response = await findListByName(name);
-      console.log(response);
       let newDate = null;
       if (date !== "") {
         const localDate = buildDateAtMidnightLocal(date);
@@ -92,10 +85,8 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
         description,
         priority,
         expectedFinishDate: newDate,
-        listId: response.id,
+        listId: id,
       };
-
-      console.log(newTask);
 
       const createTaskResponse = await createTask(newTask);
 
@@ -106,7 +97,7 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
       setPriority("");
 
       if (createTaskResponse) {
-        setTasks((prev) => [...prev, createTaskResponse]);
+        refetchLists();
       }
     } catch (err) {
       console.error(err);
@@ -134,6 +125,15 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
   };
 
   const fieldsChanged = () => nameInput !== initialName;
+
+  const [allowCascadeDelete, setAllowCascadeDelete] = useState(false);
+  const onConfirmDeleteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const inputValue = e.target.value;
+    if (inputValue.toLowerCase() === name.toLowerCase()) {
+      setAllowCascadeDelete(true);
+    } else setAllowCascadeDelete(false);
+  };
 
   useEffect(() => {
     setTasks(propTasks);
@@ -291,7 +291,7 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
               onChange={(e) => setDate(e.target.value)}
             />
             <button
-              onClick={() => handleCreateTask(name)}
+              onClick={() => handleCreateTask()}
               className="bg-white hover:bg-black hover:text-white transition duration-300 hover:cursor-pointer text-black font-semibold py-2 rounded"
               style={{ paddingLeft: "4vh", paddingRight: "4vh" }}
             >
@@ -348,21 +348,60 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
             </button>
             <h2 className="text-base font-bold m-3">
               Tem certeza que deseja excluir a lista{" "}
-              <span className="text-white font-semibold">"{name}"</span>?
+              <span className="block text-white font-semibold">"{name}" ?</span>
             </h2>
             <p className="text-sm text-stone-400">
               Essa ação não é reversível.
             </p>
-            <button
-              onClick={(e) => {
-                deleteThisList(e);
-                setShowDeleteConfirmList(false);
-              }}
-              className="hover:ring-1 ring-red-500/30 p-2 rounded-md justify-center mt-2 flex items-center gap-2 text-[#C10000] font-semibold text-sm hover:cursor-pointer transition duration-100"
-            >
-              <img src="./delete.png" alt="Trash icon" className="w-4 h-4" />
-              Excluir
-            </button>
+            {propTasks.length === 0 ? (
+              <button
+                onClick={(e) => {
+                  deleteThisList(e);
+                  setShowDeleteConfirmList(false);
+                }}
+                className="hover:ring-1 ring-red-500/30 p-2 rounded-md justify-center mt-2 flex items-center gap-2 text-[#C10000] font-semibold text-sm hover:cursor-pointer transition duration-100"
+              >
+                <img src="./delete.png" alt="Trash icon" className="w-4 h-4" />
+                Excluir
+              </button>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  placeholder={`Digite "${name}"`}
+                  className="text-md items-center p-2 rounded text-white bg-transparent border border-white "
+                  onChange={(e) => onConfirmDeleteChange(e)}
+                />
+                {allowCascadeDelete ? (
+                  <button
+                    onClick={(e) => {
+                      deleteThisList(e);
+                      setShowDeleteConfirmList(false);
+                    }}
+                    className={`hover:ring-1 ring-red-500/30 p-2 rounded-md justify-center mt-2 flex items-center gap-2 text-[#C10000] font-semibold text-sm hover:cursor-pointer transition duration-100`}
+                  >
+                    <img
+                      src="./delete.png"
+                      alt="Trash icon"
+                      className="w-4 h-4"
+                    />
+                    Excluir
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="p-2 rounded-md justify-center mt-2 flex items-center gap-2 text-gray-500 font-semibold text-sm cursor-not-allowed"
+                  >
+                    <img
+                      src="./delete.png"
+                      alt="Trash icon"
+                      className="w-4 h-4"
+                    />
+                    Excluir
+                  </button>
+                )}
+              </>
+            )}
           </div>
         </div>
       )}

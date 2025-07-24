@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import NavBar from './components/NavBar'
-import Board from './components/Board'
-import './App.css'
+import { useEffect, useState } from "react";
+import NavBar from "./components/NavBar";
+import Board from "./components/Board";
+import "./App.css";
 
-import { getLists } from './api/endpoints/List'
-import type { List } from './types/List'
+import { getLists } from "./api/endpoints/List";
+import type { List } from "./types/List";
 
 function App() {
   const [lists, setLists] = useState<List[]>([]);
@@ -17,7 +17,6 @@ function App() {
       console.error(err);
     }
   };
-
 
   useEffect(() => {
     fetchLists();

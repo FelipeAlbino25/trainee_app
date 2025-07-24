@@ -36,10 +36,12 @@ const priorityMap: Record<
 };
 
 const Priority = ({ priority }: PriorityProps) => {
-  const { bgColor, textColor, label } = priorityMap[priority] || priorityMap.DEFAULT;
+  const { bgColor, textColor, label } =
+    priorityMap[priority] || priorityMap.DEFAULT;
 
   return (
-    <div className={`${bgColor} ${textColor} font-black ml-1 mt-1 p-1 rounded-md flex items-center
+    <div
+      className={`${bgColor} ${textColor} font-black ml-1 mt-1 p-1 rounded-md flex items-center
           max-h-[20px]
           max-w-[150px]
           text-[12px]
@@ -60,8 +62,9 @@ const Priority = ({ priority }: PriorityProps) => {
             max-[500px]:text-[7px]
             
              transition-all duration-300 ease-in-out relative
-    `}>
-      <p >{label}</p>
+    `}
+    >
+      <p>{label}</p>
     </div>
   );
 };

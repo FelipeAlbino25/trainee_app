@@ -1,6 +1,6 @@
 @import "tailwindcss";
-body{
-    background-color: #252628;
-    overflow-x: hidden;
-    font-family: 'Poppins';
+body {
+  background-color: #252628;
+  overflow-x: hidden;
+  font-family: "Poppins";
 }

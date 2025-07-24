@@ -6,10 +6,7 @@ const NavBar: React.FC = () => {
       <span className="text-lg sm:text-xl font-extrabold tracking-wider">
         ALBINO TASKS
       </span>
-      <img
-        className="h-6 w-6 sm:h-8 sm:w-8"
-        src="/user.svg"
-      />
+      <img className="h-6 w-6 sm:h-8 sm:w-8" src="/user.svg" />
     </nav>
   );
 };

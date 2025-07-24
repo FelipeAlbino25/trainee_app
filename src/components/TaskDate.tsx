@@ -1,7 +1,7 @@
 import React from "react";
 
 interface TaskDateProps {
-  date: Date| undefined;
+  date: Date | undefined;
 }
 // NEAR -> prazo perto de acabar
 //MID -> prazo médio
@@ -27,12 +27,15 @@ const dateMap: Record<string, { bgColor: string; textColor: string }> = {
   },
 };
 
-
 const calculateTimeDiff = (date: Date): keyof typeof dateMap => {
   const now = new Date();
 
   // Zerar horas para comparar apenas datas, não horas/minutos
-  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const dateOnly = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
   const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   const timeDiff = dateOnly.getTime() - nowOnly.getTime();
@@ -44,16 +47,15 @@ const calculateTimeDiff = (date: Date): keyof typeof dateMap => {
   return "FAR";
 };
 
-
 const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
- 
-    if(date !=undefined){
-        const setDate = new Date(date)
-        const status = calculateTimeDiff(setDate)
-        const { bgColor, textColor } = dateMap[status];
+  if (date != undefined) {
+    const setDate = new Date(date);
+    const status = calculateTimeDiff(setDate);
+    const { bgColor, textColor } = dateMap[status];
 
-        return (
-          <div className={`items-center text-xs px-2 py-1 rounded-md font-bold ${bgColor} ${textColor} mx-1 mt-auto flex gap-2
+    return (
+      <div
+        className={`items-center text-xs px-2 py-1 rounded-md font-bold ${bgColor} ${textColor} mx-1 mt-auto flex gap-2
           text-[12px]
           h-[18px]
 
@@ -76,8 +78,11 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
             
              transition-all duration-300 ease-in-out relative
           
-          `}>
-            <img src="./calendar.svg" className="
+          `}
+      >
+        <img
+          src="./calendar.svg"
+          className="
             max-h-4
             max-w-4
             max-[1024px]:h-4
@@ -91,16 +96,15 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
 
             max-[500px]:w-2
             max-[500px]:h-2
-            "/>
-            {setDate.toLocaleDateString()}
-          </div>
-        );
-
-
-    }
-    else{
-       return (
-          <div className="text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1 mt-auto
+            "
+        />
+        {setDate.toLocaleDateString()}
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className="text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1 mt-auto
           text-[10px]
           h-[18px]
 
@@ -122,15 +126,12 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
             max-[500px]:text-[7px]
             
              transition-all duration-300 ease-in-out relative
-          ">
-            {'Data Indefinida'}
-          </div>
-        );
-
-
-    }
-
- 
+          "
+      >
+        {"Data Indefinida"}
+      </div>
+    );
+  }
 };
 
 export default TaskDate;

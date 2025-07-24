@@ -2,8 +2,16 @@ import ListComponent from "./List";
 import { useState } from "react";
 import type { List } from "../types/List";
 import { createList } from "../api/endpoints/List";
-import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import {
+  closestCenter,
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
 import { moveTaskToNewList } from "../api/endpoints/Task";
+import { toast } from "react-toastify";
 
 const Board = ({
   lists,
@@ -57,12 +65,26 @@ const Board = ({
       e.preventDefault();
 
       if (listNameInput.trim() === "") {
-        window.alert("O nome da lista não pode estar vazio!");
+        toast.error("Nome da lista não pode ser vazio!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
 
       if (verifySameListName(listNameInput)) {
-        window.alert("Já existe uma lista com este nome!");
+        toast.error("Já existe uma lista com esse nome!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
 
@@ -71,16 +93,29 @@ const Board = ({
       };
 
       await createList(newList);
+      setListNameInput("");
       refetchLists();
       closeModal(e);
     } catch (err) {
       console.error(err);
     }
   };
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    })
+  );
 
   return (
     <div className=" flex flex-row flex-nowrap gap-4 overflow-x-auto sm:pt-15 py-4  w-full pt-15">
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+        sensors={sensors}
+      >
         {lists.map((list) => (
           <ListComponent
             key={list.id}

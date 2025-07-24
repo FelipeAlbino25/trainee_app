@@ -102,35 +102,7 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
       </div>
     );
   } else {
-    return (
-      <div
-        className="text-xs px-2 py-1 rounded-md font-semibold bg-gray-300 text-gray-700 mx-1 mt-auto
-          text-[10px]
-          h-[18px]
-
-            max-[1280px]:max-w-[150px]
-            max-[1280px]:max-h-[18px]
-            max-[1280px]:text-[10px]
-
-            max-[1024px]:max-w-[120px]
-            max-[1024px]:text-[9px]
-            max-[1024px]:max-h-[20px]
-
-            max-[768px]:max-w-[100px]
-            max-[768px]:text-[8px]
-
-            max-[640px]:max-w-[80px]
-            max-[640px]:text-[9px]
-            max-[640px]:max-h-[16px]
-
-            max-[500px]:text-[7px]
-            
-             transition-all duration-300 ease-in-out relative
-          "
-      >
-        {"Data Indefinida"}
-      </div>
-    );
+    return <></>;
   }
 };
 

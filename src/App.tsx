@@ -5,6 +5,7 @@ import "./App.css";
 
 import { getLists } from "./api/endpoints/List";
 import type { List } from "./types/List";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [lists, setLists] = useState<List[]>([]);
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer position="top-center" autoClose={5000} />
       <NavBar />
       <Board lists={lists} refetchLists={fetchLists} />
     </>

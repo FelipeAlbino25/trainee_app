@@ -3,6 +3,6 @@ export type Task = {
   name: string;
   description?: string | null;
   priority: string;
-  expectedFinishDate?: string | null;
+  expectedFinishDate?: Date | null;
   listId: string;
 };

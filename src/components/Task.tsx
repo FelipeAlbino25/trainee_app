@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import TaskDate from "./TaskDate";
 import Priority from "./Priority";
-import { deleteTaskById, updateTaskById } from "../api/endpoints/Task";
+import { deleteTaskById } from "../api/endpoints/Task";
 import { useDraggable } from "@dnd-kit/core";
+import UpdateTaskModal from "./UpdateTaskModal";
 
 type TaskProps = {
   id: string;
@@ -24,96 +25,23 @@ const Task = ({
   refetchLists,
 }: TaskProps) => {
   const [modal, setModal] = useState(false);
-  const [nameInput, setNameInput] = useState("");
-  const [descriptionInput, setDescriptionInput] = useState("");
-  const [priorityInput, setPriorityInput] = useState("");
-  const [expectedFinishDateInput, setExpectedFinishDateInput] = useState("");
-
-  const [initialName, setInitialName] = useState("");
-  const [initialDescription, setInitialDescription] = useState("");
-  const [initialPriority, setInitialPriority] = useState("");
-  const [initialDate, setInitialDate] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showDeleteNotification, setShowDeleteNotification] = useState(false);
 
-  const openModal = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: id,
+    data: {
+      listId: listId,
+    },
+  });
 
-    const dateString = expectedFinishDate
-      ? expectedFinishDate.toISOString().split("T")[0]
-      : "";
-
-    setInitialName(name);
-    setInitialDescription(description ?? "");
-    setInitialPriority(priority);
-    setInitialDate(dateString);
-
-    setNameInput(name);
-    setDescriptionInput(description ?? "");
-    setPriorityInput(priority);
-    setExpectedFinishDateInput(dateString);
-
-    setModal(true);
-  };
-
-  const fieldsChanged = () => {
-    return (
-      nameInput !== initialName ||
-      descriptionInput !== initialDescription ||
-      priorityInput !== initialPriority ||
-      expectedFinishDateInput !== initialDate
-    );
-  };
-
-  const closeModal = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (fieldsChanged()) {
-      const confirmUpdate = window.confirm(
-        "Quer realmente perder estas mudanças?"
-      );
-      if (confirmUpdate) {
-        setModal(false);
+  const style = transform
+    ? {
+        transform: `translate(${transform.x}px, ${transform.y}px)`,
+        zIndex: 9999,
+        position: "relative" as React.CSSProperties["position"],
       }
-    } else {
-      setModal(false);
-    }
-  };
-
-  const buildDateAtMidnightLocal = (yyyyMmDd: string) => {
-    const [year, month, day] = yyyyMmDd.split("-").map(Number);
-    return new Date(year, month - 1, day, 0, 0, 0);
-  };
-
-  const updateThisTask = async (e: React.MouseEvent) => {
-    try {
-      e.preventDefault();
-
-      let newDate = null;
-      if (expectedFinishDateInput != "") {
-        const localDate = buildDateAtMidnightLocal(expectedFinishDateInput);
-        newDate = localDate.toISOString();
-      } else {
-        newDate = undefined;
-      }
-      const newTask = {
-        id: id,
-        name: nameInput,
-        description: descriptionInput,
-        priority: priorityInput,
-        expectedFinishDate: newDate,
-        listId: listId,
-      };
-
-      const response = await updateTaskById(newTask);
-      console.log(response);
-      await refetchLists();
-      setModal(false);
-    } catch (err) {
-      window.alert("Algo deu errado");
-      console.error(err);
-    }
-  };
+    : undefined;
 
   const deleteThisTask = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -130,27 +58,11 @@ const Task = ({
     }, 900);
   };
 
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: id,
-    data: {
-      listId: listId,
-    },
-  });
-
-  const isDragging = !!transform;
-  const style = transform
-    ? {
-        transform: `translate(${transform.x}px, ${transform.y}px)`,
-        zIndex: 9999, // Eleva o item ao topo durante o drag
-        position: "relative" as React.CSSProperties["position"],
-      }
-    : undefined;
-
   return (
     <>
       <div
-        onClick={(e) => {
-          if (!modal) openModal(e);
+        onClick={() => {
+          if (!modal) setModal(true);
         }}
         style={style}
         ref={setNodeRef}
@@ -167,7 +79,7 @@ const Task = ({
           max-[500px]:h-[130px] 
           max-[400px]:h-[130px]
           
-           ${isDragging ? "z-[9999]" : ""}
+          
           p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50
           ${transform ? "" : "transition duration-200"}
           `}
@@ -182,97 +94,18 @@ const Task = ({
         <TaskDate date={expectedFinishDate} />
       </div>
 
-      <div
-        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
-          modal ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <div
-          className="absolute inset-0 bg-black/80"
-          onClick={closeModal}
-        ></div>
+      <UpdateTaskModal
+        isOpen={modal}
+        onClose={() => setModal(false)}
+        id={id}
+        name={name}
+        description={description}
+        priority={priority}
+        expectedFinishDate={expectedFinishDate}
+        listId={listId}
+        refetchLists={refetchLists}
+      />
 
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className={`
-      fixed top-16 right-0 h-full w-full max-w-md bg-[#252628] p-4 shadow-lg 
-      transform transition-transform duration-300 ease-in-out 
-      ${modal ? "translate-x-0" : "translate-x-full"}
-      flex flex-col gap-2 overflow-y-auto
-      text-white
-    `}
-        >
-          <button
-            onClick={closeModal}
-            className="fixed top-2 right-2 text-black text-xl hover:text-red-400 font-extrabold transition duration-200 hover:cursor-pointer px-2 hover:bg-red-900/20 rounded-full"
-          >
-            &times;
-          </button>
-
-          <input
-            onChange={(e) => setNameInput(e.target.value)}
-            value={nameInput}
-            type="text"
-            className="p-2 text-xl w-15/16 hover:ring-slate-200/10 hover:ring-2  rounded-md transition duration-200 focus:ring-2 focus:ring-white/20 focus:outline-none"
-          />
-          <div className="flex items-center gap-2 mt-4">
-            <label className="text-sm font-semibold text-white">
-              Prioridade:
-            </label>
-            <select
-              onChange={(e) => setPriorityInput(e.target.value)}
-              className="ring-1 ring-slate-100/5 rounded-md p-2 ml-auto bg-transparent text-white border border-white/10 hover:ring-2 hover:ring-slate-200/10 transition duration-200 hover:cursor-pointer"
-              defaultValue={priority}
-            >
-              <option value="LOW">Baixa Prioridade</option>
-              <option value="MEDIUM">Média Prioridade</option>
-              <option value="HIGH">Alta Prioridade</option>
-              <option value="VERY_HIGH">Altíssima Prioridade</option>
-            </select>
-          </div>
-          <div className="flex items-center gap-2 mt-4">
-            <label className="text-sm font-semibold text-white">
-              Data de Entrega:
-            </label>
-            <input
-              onChange={(e) => setExpectedFinishDateInput(e.target.value)}
-              defaultValue={
-                expectedFinishDate != undefined
-                  ? expectedFinishDate.toISOString().split("T")[0]
-                  : ""
-              }
-              type="date"
-              className="hover:cursor-pointer p-2 ring-1 ml-auto ring-slate-100/10 hover:ring-slate-200/10 hover:ring-2 rounded-md transition duration-200 focus:ring-2 focus:ring-white/20 focus:outline-none"
-            />
-          </div>
-          <p className="justify-left flex mt-3">Descrição:</p>
-          <textarea
-            value={descriptionInput}
-            onChange={(e) => setDescriptionInput(e.target.value)}
-            className="p-2 min-h-[100px] resize-y rounded-md ring-1 ring-slate-100/10 hover:ring-slate-200/10 hover:ring-2 transition duration-200 focus:ring-2 focus:ring-white/20 focus:outline-none bg-transparent text-white"
-          />
-
-          <div className="flex gap-2 mt-2 w-full">
-            <button
-              onClick={(e) => updateThisTask(e)}
-              className="flex-1 py-2 bg-white text-black font-bold rounded-xl hover:bg-black hover:text-white transition duration-300 hover:cursor-pointer"
-            >
-              Atualizar
-            </button>
-
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setShowDeleteConfirm(true);
-              }}
-              className="rounded-xl flex-1 py-2 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-xlhover:cursor-pointer hover:ring-1 transition duration-200"
-            >
-              <img src="./delete.png" alt="Trash icon" className="w-5 h-5 " />
-              Excluir
-            </button>
-          </div>
-        </div>
-      </div>
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-[999] bg-black/80 flex items-center justify-center">
           <div className="relative bg-[#252628] border border-white/10 p-5 rounded-xl shadow-lg flex flex-col gap-3 max-w-xs w-full mx-4 text-white">

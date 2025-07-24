@@ -18,9 +18,8 @@ export const createTask = async (data: Partial<Task>): Promise<Task> => {
   return response.data as Task;
 };
 
-export const deleteTaskById = async (id: string): Promise<Boolean> => {
-  const response = await api.delete(`/tasks/${id}`);
-  return response.data as Boolean;
+export const deleteTaskById = async (id: string): Promise<void> => {
+  await api.delete(`/tasks/${id}`);
 };
 export const updateTaskById = async (data: Partial<Task>): Promise<Task> => {
   const updateTaskDtos = {
@@ -38,9 +37,8 @@ export const findTaskByListId = async (id: string): Promise<Task[]> => {
   const response = await api.get(`/tasks/listId/${id}`);
   return response.data as Task[];
 };
-export const deleteTasksByListId = async (id: string): Promise<Boolean> => {
-  const response = await api.delete(`/tasks/listId/${id}`);
-  return response.data as Boolean;
+export const deleteTasksByListId = async (id: string): Promise<void> => {
+  await api.delete(`/tasks/listId/${id}`);
 };
 export const moveTaskToNewList = async (
   id: string,

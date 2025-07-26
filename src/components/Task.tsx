@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import TaskDate from "./TaskDate";
 import Priority from "./Priority";
-import { deleteTaskById } from "../api/endpoints/Task";
+import { deleteTaskById, updateTaskById } from "../api/endpoints/Task";
 import { useDraggable } from "@dnd-kit/core";
 import UpdateTaskModal from "./UpdateTaskModal";
+import TaskDone from "./TaskDone";
+import { toast } from "react-toastify";
 
 type TaskProps = {
   id: string;
@@ -12,6 +14,7 @@ type TaskProps = {
   priority: string;
   expectedFinishDate?: Date;
   listId: string;
+  finished: boolean;
   refetchLists: () => Promise<void>;
 };
 
@@ -22,11 +25,26 @@ const Task = ({
   priority,
   expectedFinishDate,
   listId,
+  finished,
   refetchLists,
 }: TaskProps) => {
+  //updateTask modal state
   const [modal, setModal] = useState(false);
+
+  //delete confirmation modal state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  //delete notification state
   const [showDeleteNotification, setShowDeleteNotification] = useState(false);
+
+  //TaskDone.tsx state
+  const [isDone, setIsDone] = useState(finished);
+
+  const [nameInput, setNameInput] = useState(name);
+  const [descriptionInput, setDescriptionInput] = useState(description ?? "");
+  const [priorityInput, setPriorityInput] = useState(priority);
+  const [expectedFinishDateInput, setExpectedFinishDateInput] =
+    useState(expectedFinishDate);
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
@@ -58,6 +76,44 @@ const Task = ({
     }, 900);
   };
 
+  const handleToggleDone = async (taskId: string) => {
+    let toastMessage = isDone
+      ? "Tarefa marcada como não concluída!"
+      : "Tarefa concluída com sucesso!";
+
+    try {
+      const updatedTask = {
+        id: taskId,
+        name,
+        description,
+        priority,
+        expectedFinishDate,
+        listId,
+        finished: !isDone,
+      };
+
+      await updateTaskById(updatedTask);
+
+      setIsDone((prev) => !prev);
+      toast.success(toastMessage);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao concluir a tarefa");
+    }
+  };
+
+  const handleUpdateTask = async (
+    updatedName: string,
+    updatedDescription: string,
+    updatedPriority: string,
+    updatedDate: Date | undefined
+  ) => {
+    setNameInput(updatedName);
+    setDescriptionInput(updatedDescription);
+    setPriorityInput(updatedPriority);
+    setExpectedFinishDateInput(updatedDate);
+  };
+
   return (
     <>
       <div
@@ -80,30 +136,35 @@ const Task = ({
           max-[400px]:h-[130px]
           
           
-          p-2 hover:cursor-pointer hover:underline hover:border-stone-300/60 hover:bg-stone-900/50
+          p-2 hover:cursor-pointer hover:border-stone-300/60 hover:bg-stone-900/50
           ${transform ? "" : "transition duration-200"}
           `}
       >
-        <Priority priority={priority} />
+        <div className="flex items-center justify-between w-full">
+          <Priority priority={priorityInput} />
+          <TaskDone taskId={id} done={isDone} onToggleDone={handleToggleDone} />
+        </div>
         <div>
-          <span className="text-sm font-extrabold px-1">{name}</span>
+          <span className="text-sm font-[1000] px-1">{nameInput}</span>
         </div>
         <p className="tracking-wide w-full text-left text-[10px] text-xs/4 px-1 overflow-hidden text-ellipsis break-words">
-          {description}
+          {descriptionInput}
         </p>
-        <TaskDate date={expectedFinishDate} />
+        <TaskDate date={expectedFinishDateInput} />
       </div>
 
       <UpdateTaskModal
         isOpen={modal}
         onClose={() => setModal(false)}
         id={id}
-        name={name}
-        description={description}
-        priority={priority}
-        expectedFinishDate={expectedFinishDate}
+        name={nameInput}
+        description={descriptionInput}
+        priority={priorityInput}
+        expectedFinishDate={expectedFinishDateInput}
         listId={listId}
+        finished={isDone}
         refetchLists={refetchLists}
+        onUpdateTask={handleUpdateTask}
       />
 
       {showDeleteConfirm && (

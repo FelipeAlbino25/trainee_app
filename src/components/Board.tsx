@@ -95,6 +95,7 @@ const Board = ({
       await createList(newList);
       setListNameInput("");
       refetchLists();
+      toast.success("Lista criada com sucesso!");
       closeModal(e);
     } catch (err) {
       console.error(err);
@@ -103,7 +104,7 @@ const Board = ({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        delay: 150,
+        delay: 178,
         tolerance: 5,
       },
     })

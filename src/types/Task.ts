@@ -5,4 +5,5 @@ export type Task = {
   priority: string;
   expectedFinishDate?: Date | null;
   listId: string;
+  finished: boolean;
 };

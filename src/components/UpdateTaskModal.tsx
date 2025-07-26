@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { updateTaskById } from "../api/endpoints/Task";
+import { deleteTaskById, updateTaskById } from "../api/endpoints/Task";
 import { toast, Bounce } from "react-toastify";
 
 type UpdateTaskModalProps = {
@@ -11,7 +11,14 @@ type UpdateTaskModalProps = {
   priority: string;
   expectedFinishDate?: Date;
   listId: string;
+  finished: boolean;
   refetchLists: () => Promise<void>;
+  onUpdateTask: (
+    name: string,
+    description: string,
+    priority: string,
+    expectedFinishDate?: Date
+  ) => void;
 };
 
 const UpdateTaskModal = ({
@@ -23,6 +30,8 @@ const UpdateTaskModal = ({
   priority,
   expectedFinishDate,
   listId,
+  finished,
+  onUpdateTask,
   refetchLists,
 }: UpdateTaskModalProps) => {
   const [nameInput, setNameInput] = useState(name);
@@ -42,6 +51,11 @@ const UpdateTaskModal = ({
       );
     }
   }, [isOpen, name, description, priority, expectedFinishDate]);
+
+  const buildDateAtMidnightLocal = (yyyyMmDd: string) => {
+    const [year, month, day] = yyyyMmDd.split("-").map(Number);
+    return new Date(year, month - 1, day, 0, 0, 0);
+  };
 
   const fieldsChanged = () => {
     const originalDate = expectedFinishDate
@@ -114,10 +128,11 @@ const UpdateTaskModal = ({
         priority: priorityInput,
         expectedFinishDate: newDate,
         listId,
+        finished: finished,
       };
-
+      console.log(newTask);
       await updateTaskById(newTask);
-      await refetchLists();
+      await onUpdateTask(nameInput, descriptionInput, priorityInput, newDate);
       onClose();
     } catch (err) {
       console.error(err);
@@ -133,9 +148,17 @@ const UpdateTaskModal = ({
     }
   };
 
-  const buildDateAtMidnightLocal = (yyyyMmDd: string) => {
-    const [year, month, day] = yyyyMmDd.split("-").map(Number);
-    return new Date(year, month - 1, day, 0, 0, 0);
+  const deleteTask = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      await deleteTaskById(id);
+      await refetchLists();
+      toast.success("Tarefa excluída com sucesso!");
+      onClose();
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao excluir a tarefa");
+    }
   };
 
   return (
@@ -200,12 +223,20 @@ const UpdateTaskModal = ({
           className="p-2 min-h-[100px] resize-y rounded-md ring-1 ring-slate-100/10 hover:ring-slate-200/10 hover:ring-2 transition duration-200 focus:ring-2 focus:ring-white/20 focus:outline-none bg-transparent text-white"
         />
 
-        <button
-          onClick={updateTask}
-          className="mt-4 py-2 bg-white text-black font-bold rounded-xl hover:bg-black hover:text-white transition duration-300"
-        >
-          Atualizar
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={(e) => updateTask(e)}
+            className="mt-4 w-[100%] py-2 bg-white text-black font-bold rounded-xl hover:bg-black hover:cursor-pointer hover:text-white transition duration-300"
+          >
+            Atualizar
+          </button>
+          <button
+            onClick={(e) => deleteTask(e)}
+            className="mt-4 w-[100%] py-2 bg-white text-black font-bold rounded-xl hover:bg-black hover:text-white transition duration-300 hover:cursor-pointer"
+          >
+            Excluir
+          </button>
+        </div>
       </div>
     </div>
   );

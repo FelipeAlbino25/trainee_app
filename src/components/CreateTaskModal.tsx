@@ -35,6 +35,7 @@ const CreateTaskModal = (CreateTaskModalProps: CreateTaskModalProps) => {
         priority,
         expectedFinishDate: newDate,
         listId: listId,
+        finished: false,
       };
 
       await createTask(newTask);
@@ -45,6 +46,7 @@ const CreateTaskModal = (CreateTaskModalProps: CreateTaskModalProps) => {
       setDescription("");
       setPriority("");
       await refetchLists();
+      toast.success("Tarefa criada com sucesso!");
     } catch (err) {
       console.error(err);
       toast.error("Erro ao atualizar a tarefa. Verifique os campos.", {

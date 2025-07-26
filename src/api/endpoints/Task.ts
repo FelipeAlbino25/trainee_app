@@ -4,7 +4,6 @@ import type { Task } from "../../types/Task";
 
 export const getTasks = async (): Promise<Task[]> => {
   const response = await api.get("/tasks/");
-  console.log(response.data);
   return response.data as Task[];
 };
 
@@ -28,6 +27,7 @@ export const updateTaskById = async (data: Partial<Task>): Promise<Task> => {
     priority: data.priority,
     expectedFinishDate: data.expectedFinishDate,
     listId: data.listId,
+    finished: data.finished,
   };
   const response = await api.put(`/tasks/${data.id}`, updateTaskDtos);
   return response.data as Task;

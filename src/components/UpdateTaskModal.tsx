@@ -99,7 +99,7 @@ const UpdateTaskModal = ({
         ),
         {
           position: "top-center",
-          autoClose: false,
+          autoClose: 2000,
           closeOnClick: false,
           closeButton: false,
           draggable: false,

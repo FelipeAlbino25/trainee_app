@@ -8,6 +8,7 @@ type CreateTaskModalProps = {
   isOpen: boolean;
   onClose: () => void;
 };
+
 const CreateTaskModal = (CreateTaskModalProps: CreateTaskModalProps) => {
   const { listId, refetchLists, isOpen, onClose } = CreateTaskModalProps;
 

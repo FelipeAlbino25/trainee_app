@@ -77,23 +77,22 @@ const Task = ({
   };
 
   const handleToggleDone = async (taskId: string) => {
-    let toastMessage = isDone
+    const toastMessage = isDone
       ? "Tarefa marcada como não concluída!"
       : "Tarefa concluída com sucesso!";
 
     try {
       const updatedTask = {
         id: taskId,
-        name,
-        description,
-        priority,
-        expectedFinishDate,
+        name: nameInput,
+        description: descriptionInput,
+        priority: priorityInput,
+        expectedFinishDate: expectedFinishDateInput,
         listId,
         finished: !isDone,
       };
 
       await updateTaskById(updatedTask);
-
       setIsDone((prev) => !prev);
       toast.success(toastMessage);
     } catch (error) {

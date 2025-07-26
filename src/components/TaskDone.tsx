@@ -14,7 +14,10 @@ const TaskDone = (TaskDoneProps: TaskDoneProps) => {
   };
 
   return done ? (
-    <button className="flex items-center gap-1" onClick={handleToggle}>
+    <button
+      className="flex items-center gap-1 hover:cursor-pointer rounded-md"
+      onClick={handleToggle}
+    >
       <img
         src="./checked.svg"
         className="w-5 h-5 border border-dashed rounded-full border-green-700"
@@ -24,7 +27,10 @@ const TaskDone = (TaskDoneProps: TaskDoneProps) => {
       </span>
     </button>
   ) : (
-    <button className="flex items-center gap-1" onClick={handleToggle}>
+    <button
+      className="flex items-center gap-1 hover:cursor-pointer"
+      onClick={handleToggle}
+    >
       <img
         src="./check.svg"
         className="w-5 h-5 border border-dashed rounded-full"

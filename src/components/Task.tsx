@@ -125,7 +125,7 @@ const Task = ({
         {...attributes}
         className={`relative border border-stone-300/25 bg-[#252628] text-stone-300 rounded-xl flex flex-col items-start gap-1 
           w-full 
-          h-[145px]                                
+          h-[165px]                                
           
           max-[1280px]:h-[145px]                            
           max-[1024px]:h-[145px] 

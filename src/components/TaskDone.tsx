@@ -20,9 +20,9 @@ const TaskDone = (TaskDoneProps: TaskDoneProps) => {
     >
       <img
         src="./checked.svg"
-        className="w-5 h-5 border border-dashed rounded-full border-green-700"
+        className="w-6 h-6 border border-dashed rounded-full border-green-700"
       />
-      <span className=" text-[12px] text-green-700 font-semibold">
+      <span className=" text-[14px] text-green-700 font-semibold">
         Finalizada
       </span>
     </button>
@@ -33,9 +33,9 @@ const TaskDone = (TaskDoneProps: TaskDoneProps) => {
     >
       <img
         src="./check.svg"
-        className="w-5 h-5 border border-dashed rounded-full"
+        className="w-6 h-6 border border-dashed rounded-full"
       />
-      <span className="text-[12px] font-semibold">Finalizar</span>
+      <span className="text-[14px] font-semibold">Finalizar</span>
     </button>
   );
 };

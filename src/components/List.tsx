@@ -202,6 +202,8 @@ const List = ({ id, name, propTasks, refetchLists }: ListProps) => {
           />
         )}
 
+        {/*MODAL PARA ATUALIZAR UMA LISTA*/}
+
         {showListModal && (
           <div
             className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center text-white"

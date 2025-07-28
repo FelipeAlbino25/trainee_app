@@ -1,7 +1,7 @@
 import ListComponent from "./List";
 import { useState } from "react";
 import type { List } from "../types/List";
-import { createList } from "../api/endpoints/List";
+import { createList, findListByName } from "../api/endpoints/List";
 import {
   closestCenter,
   DndContext,
@@ -94,7 +94,8 @@ const Board = ({
 
       await createList(newList);
       setListNameInput("");
-      refetchLists();
+      const createdList = await findListByName(newList.name);
+      lists.push(createdList);
       toast.success("Lista criada com sucesso!");
       closeModal(e);
     } catch (err) {

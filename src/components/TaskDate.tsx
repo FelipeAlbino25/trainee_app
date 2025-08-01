@@ -74,7 +74,7 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
             max-[640px]:text-[9px]
             max-[640px]:max-h-[16px]
 
-            max-[500px]:text-[7px]
+            max-[500px]:text-[9px]
             
              transition-all duration-300 ease-in-out relative
           

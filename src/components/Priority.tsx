@@ -62,8 +62,8 @@ const Priority = ({ priority }: PriorityProps) => {
             max-[640px]:text-[9px]
             max-[640px]:max-h-[16px]
 
-            max-[500px]:text-[7px]
-            max-[500px]:max-w-[90px]
+            max-[500px]:text-[9px]
+            max-[500px]:max-w-[105px]
             max-[500px]:font-extrabold
              transition-all duration-300 ease-in-out relative
     `}

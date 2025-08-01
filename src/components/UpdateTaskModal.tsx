@@ -130,9 +130,8 @@ const UpdateTaskModal = ({
         listId,
         finished: finished,
       };
-      console.log(newTask);
       await updateTaskById(newTask);
-      await onUpdateTask(nameInput, descriptionInput, priorityInput, newDate);
+      onUpdateTask(nameInput, descriptionInput, priorityInput, newDate);
       onClose();
     } catch (err) {
       console.error(err);

@@ -98,7 +98,7 @@ const TaskDate: React.FC<TaskDateProps> = ({ date }) => {
             max-[500px]:h-2
             "
         />
-        {setDate.toLocaleDateString()}
+        {setDate.toLocaleDateString("en-GB")}
       </div>
     );
   } else {
